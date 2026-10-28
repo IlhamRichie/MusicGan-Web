@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MusicGan — Dynamic Island & Live Lyrics for Windows</title>
+  <link rel="icon" type="image/x-icon" href="app.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #10b981;
+      --accent-rgb: 16, 185, 129;
+      --accent-subtle: rgba(16, 185, 129, 0.12);
+      --bg: #070709;
+      --surface-1: #0e0e12;
+      --surface-2: #14141a;
+      --surface-3: #1a1a22;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text-1: #fcfcfc;
+      --text-2: #a1a1aa;
+      --text-3: #71717a;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-1);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+
+    /* Ambient Spotlight on Cursor */
+    .spotlight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 30%), rgba(var(--accent-rgb), 0.06), transparent 80%);
+      transition: background 0.3s ease;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      background: rgba(7, 7, 9, 0.85);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-1);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #1b1b24 0%, #0c0c10 100%);
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+    .brand-mark img {
+      width: 20px;
+      height: 20px;
+    }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-item {
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+    .nav-item:hover {
+      color: var(--text-1);
+    }
+    .btn-nav {
+      background: var(--text-1);
+      color: #070709;
+      padding: 8px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .btn-nav:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 88px 0 48px 0;
+      text-align: center;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+    }
+    .badge-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4.3rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      margin-bottom: 22px;
+      color: #fff;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--text-2);
+      max-width: 680px;
+      margin: 0 auto 36px auto;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.6;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .btn-cta {
+      background: var(--accent);
+      color: #042918;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 13px 26px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      box-shadow: 0 4px 18px rgba(var(--accent-rgb), 0.28);
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+    .btn-secondary {
+      background: var(--surface-1);
+      color: var(--text-1);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 13px 24px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-secondary:hover {
+      background: var(--surface-2);
+      border-color: var(--border-strong);
+    }
+    .spec-badges {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-3);
+    }
+    .spec-badges span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .spec-sep {
+      color: var(--border-strong);
+    }
+
+    /* Live Simulator Section */
+    .simulator-wrap {
+      margin: 40px auto 90px auto;
+      max-width: 920px;
+    }
+    .simulator-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding: 0 4px;
+      font-size: 0.82rem;
+      color: var(--text-3);
+    }
+    .simulator-label {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .monitor-bezel {
+      background: #020203;
+      border: 1px solid var(--border-strong);
+      border-radius: 18px 18px 8px 8px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      position: relative;
+      overflow: hidden;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+    }
+    .monitor-bar {
+      height: 28px;
+      background: #060608;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-3);
+    }
+    .bezel-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .b-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Interactive Island Preview */
+    .island-stage {
+      position: absolute;
+      top: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    .island-pill {
+      background: #020204;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 17px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.9);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: width 0.32s cubic-bezier(0.34, 1.45, 0.64, 1), height 0.3s ease, border-radius 0.3s ease;
+      overflow: hidden;
+      user-select: none;
+      width: 330px;
+      height: 34px;
+      padding: 0 8px;
+    }
+
+    /* Collapsed View */
+    .view-collapsed {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      transition: opacity 0.2s ease;
+    }
+    .col-vinyl {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #111116;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      animation: spin 3.5s linear infinite;
+    }
+    .col-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      transition: background 0.3s ease;
+    }
+    .col-text {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #f4f4f5;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      padding: 0 8px;
+      transition: opacity 0.18s ease;
+    }
+    .col-viz {
+      display: flex;
+      align-items: center;
+      gap: 2.2px;
+      flex-shrink: 0;
+      width: 20px;
+      justify-content: flex-end;
+    }
+    .v-bar {
+      width: 2.5px;
+      background: var(--accent);
+      border-radius: 1.25px;
+      animation: barDance 0.85s ease-in-out infinite alternate;
+      transition: background 0.3s ease;
+    }
+    .v-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
+    .v-bar:nth-child(2) { height: 13px; animation-delay: 0.3s; }
+    .v-bar:nth-child(3) { height: 9px; animation-delay: 0.2s; }
+    .v-bar:nth-child(4) { height: 5px; animation-delay: 0.4s; }
+
+    /* Expanded View */
+    .view-expanded {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 4px 6px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .art-shell {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      background: #14141a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .art-disc {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #0d0d11;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: spin 3.5s linear infinite;
+    }
+    .art-center {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .track-meta {
+      flex: 1;
+      text-align: left;
+      overflow: hidden;
+    }
+    .meta-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .meta-sub {
+      font-size: 10.5px;
+      color: var(--text-2);
+      margin-bottom: 5px;
+    }
+    .prog-track {
+      width: 100%;
+      height: 2.5px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+    .prog-bar {
+      height: 100%;
+      width: 50%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: background 0.3s ease;
+    }
+    .ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .ctrl-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      color: var(--text-2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+    .ctrl-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .ctrl-btn.btn-play {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    /* Expanded Trigger */
+    .island-pill.expanded {
+      width: 356px !important;
+      height: 76px;
+      border-radius: 22px;
+      padding: 10px 14px;
+    }
+    .island-pill.expanded .view-collapsed {
+      display: none;
+    }
+    .island-pill.expanded .view-expanded {
+      display: flex;
+    }
+
+    /* Workspace Content (Fake Code / Editor Canvas) */
+    .editor-canvas {
+      flex: 1;
+      padding: 70px 28px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #4b5563;
+      text-align: left;
+      user-select: none;
+    }
+    .line-row {
+      display: flex;
+      gap: 16px;
+    }
+    .num { color: #374151; width: 20px; text-align: right; }
+    .k-blue { color: #60a5fa; }
+    .k-green { color: #34d399; }
+    .k-purple { color: #c084fc; }
+
+    /* Theme Swatches */
+    .palette-row {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-size: 0.82rem;
+      color: var(--text-2);
+    }
+    .swatches-bar {
+      display: flex;
+      gap: 8px;
+    }
+    .swatch-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .swatch-dot:hover {
+      transform: scale(1.2);
+    }
+    .swatch-dot.active {
+      border-color: #fff;
+      transform: scale(1.15);
+    }
+
+    /* Core Pillars (Feature Cards) */
+    .features-section {
+      padding: 70px 0;
+    }
+    .section-head {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .section-head h2 {
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .section-head p {
+      color: var(--text-2);
+      font-size: 0.98rem;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    .grid-pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .pillar-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 30px 26px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+    .pillar-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+    .card-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .pillar-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .pillar-card p {
+      color: var(--text-2);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    /* Interactive Tab Deep Dive */
+    .deep-dive {
+      padding: 70px 0;
+      border-top: 1px solid var(--border);
+    }
+    .tab-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .tab-btn {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover {
+      color: var(--text-1);
+      border-color: var(--border-strong);
+    }
+    .tab-btn.active {
+      background: var(--surface-2);
+      color: var(--text-1);
+      border-color: var(--accent);
+    }
+    .tab-content-panel {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 36px;
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .tab-content-panel.active {
+      display: grid;
+    }
+    .tab-info h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      color: #fff;
+    }
+    .tab-info p {
+      color: var(--text-2);
+      font-size: 0.94rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .tab-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text-1);
+    }
+    .tab-bullet-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .bullet-check {
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .tab-graphic {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+    .graphic-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 8px;
+    }
+    .graphic-val {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Comparison Table */
+    .compare-section {
+      padding: 70px 0;
+      border-top: 1px solid var(--border);
+    }
+    .table-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    .comp-table th {
+      background: var(--surface-2);
+      padding: 16px 22px;
+      color: var(--text-1);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-table td {
+      padding: 15px 22px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-2);
+    }
+    .comp-table tr:last-child td {
+      border-bottom: none;
+    }
+    .col-highlight {
+      color: var(--accent) !important;
+      font-weight: 600;
+    }
+    .col-dim {
+      color: var(--text-3);
+    }
+
+    /* Pricing Section */
+    .pricing-wrap {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .price-box {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 34px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+    .price-box.pro {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface-1) 100%);
+      box-shadow: 0 16px 40px rgba(var(--accent-rgb), 0.12);
+    }
+    .price-tag-badge {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: var(--accent-subtle);
+      border: 1px solid rgba(var(--accent-rgb), 0.3);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+    .plan-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .plan-price {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    .plan-price small {
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--text-3);
+    }
+    .plan-desc {
+      color: var(--text-2);
+      font-size: 0.88rem;
+      margin-bottom: 24px;
+    }
+    .plan-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.88rem;
+      margin-bottom: 30px;
+    }
+    .plan-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-1);
+    }
+    .btn-plan {
+      width: 100%;
+      padding: 12px 0;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    .btn-plan-free {
+      background: var(--surface-2);
+      color: var(--text-1);
+      border: 1px solid var(--border);
+    }
+    .btn-plan-free:hover {
+      background: var(--surface-3);
+      border-color: var(--border-strong);
+    }
+    .btn-plan-pro {
+      background: var(--accent);
+      color: #042918;
+      box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.25);
+    }
+    .btn-plan-pro:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    /* FAQ */
+    .faq-wrap {
+      padding: 70px 0 90px 0;
+      max-width: 760px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+    .faq-block {
+      border-bottom: 1px solid var(--border);
+      padding: 22px 0;
+    }
+    .faq-question {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .faq-answer {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+      text-align: center;
+      font-size: 0.84rem;
+      color: var(--text-3);
+    }
+
+    /* Keyframes */
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes barDance {
+      0% { transform: scaleY(0.35); }
+      100% { transform: scaleY(1.3); }
+    }
+
+    @media (max-width: 768px) {
+      .tab-content-panel { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.2rem; }
+      .nav-menu { gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="spotlight" id="spotlight"></div>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="brand">
+        <div class="brand-mark">
+          <img src="app.ico" alt="MusicGan Logo">
+        </div>
+        <span>MusicGan</span>
+      </a>
+      <div class="nav-menu">
+        <a href="#simulator" class="nav-item">Interactive Demo</a>
+        <a href="#features" class="nav-item">Features</a>
+        <a href="#compare" class="nav-item">Specs</a>
+        <a href="#pricing" class="nav-item">Pricing</a>
+        <a href="MusicGan-v1.2.zip" class="btn-nav" download>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- Hero -->
+    <header class="hero">
+      <div class="badge-pill">
+        <div class="badge-indicator"></div>
+        <span>Version 1.2 Stable — Native C# WPF</span>
+      </div>
+
+      <h1>
+        The Floating Dynamic Island<br>
+        <span>Engineered for Windows.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Single-line live synchronized lyrics and effortless media controls tucked seamlessly into your monitor's top bezel. Pure C# WPF, 80 KB single binary, zero bloat.
+      </p>
+
+      <div class="hero-actions">
+        <a href="MusicGan-v1.2.zip" class="btn-cta" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Portable ZIP (69 KB)
+        </a>
+        <a href="#simulator" class="btn-secondary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          Interactive Preview
+        </a>
+      </div>
+
+      <div class="spec-badges">
+        <span>Windows 10 / 11 Native</span>
+        <span class="spec-sep">•</span>
+        <span>0% Electron</span>
+        <span class="spec-sep">•</span>
+        <span>&lt; 20 MB Memory Footprint</span>
+        <span class="spec-sep">•</span>
+        <span>Spotify & YouTube Ready</span>
+      </div>
+    </header>
+
+    <!-- Simulator -->
+    <section class="simulator-wrap" id="simulator">
+      <div class="simulator-header">
+        <span class="simulator-label">LIVE SYSTEM SIMULATOR</span>
+        <span>Hover to expand • Leave to collapse</span>
+      </div>
+
+      <div class="monitor-bezel">
+        <div class="monitor-bar">
+          <div class="bezel-dots">
+            <span class="b-dot"></span>
+            <span class="b-dot"></span>
+            <span class="b-dot"></span>
+          </div>
+          <span>DISPLAY 1 — 1920 × 1080 @ 60 FPS</span>
+          <span>WPF ENGINE</span>
+        </div>
+
+        <!-- The Island -->
+        <div class="island-stage">
+          <div class="island-pill" id="simIsland">
+
+            <!-- Collapsed State -->
+            <div class="view-collapsed">
+              <div class="col-vinyl">
+                <div class="col-dot"></div>
+              </div>
+              <div class="col-text" id="simLyric">
+                ♪ Cause if one day you wake up and find that you're missing me
+              </div>
+              <div class="col-viz">
+                <div class="v-bar"></div>
+                <div class="v-bar"></div>
+                <div class="v-bar"></div>
+                <div class="v-bar"></div>
+              </div>
+            </div>
+
+            <!-- Expanded State -->
+            <div class="view-expanded">
+              <div class="art-shell">
+                <div class="art-disc">
+                  <div class="art-center"></div>
+                </div>
+              </div>
+              <div class="track-meta">
+                <div class="meta-name" id="simTitle">The Man Who Can't Be Moved</div>
+                <div class="meta-sub" id="simArtist">The Script</div>
+                <div class="prog-track">
+                  <div class="prog-bar"></div>
+                </div>
+              </div>
+              <div class="ctrl-group">
+                <button class="ctrl-btn" onclick="simPrev(event)" title="Previous Track">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+                <button class="ctrl-btn btn-play" onclick="simToggle(event)" id="simPlayBtn" title="Play / Pause">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h3.5v14H6zm8.5 0H18v14h-3.5z"/></svg>
+                </button>
+                <button class="ctrl-btn" onclick="simNext(event)" title="Next Track">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Background Workspace -->
+        <div class="editor-canvas">
+          <div class="line-row"><span class="num">1</span><span><span class="k-blue">using</span> System;</span></div>
+          <div class="line-row"><span class="num">2</span><span><span class="k-blue">using</span> MusicGan.DynamicIsland;</span></div>
+          <div class="line-row"><span class="num">3</span><span></span></div>
+          <div class="line-row"><span class="num">4</span><span><span class="k-purple">namespace</span> Workspace {</span></div>
+          <div class="line-row"><span class="num">5</span><span>&nbsp;&nbsp;<span class="k-blue">public class</span> <span class="k-green">DeveloperFocus</span> {</span></div>
+          <div class="line-row"><span class="num">6</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k-blue">void</span> <span class="k-green">SingAlongWhileCoding</span>() {</span></div>
+          <div class="line-row"><span class="num">7</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Island.<span class="k-green">RenderLiveLyrics</span>(topBezel: <span class="k-purple">true</span>);</span></div>
+          <div class="line-row"><span class="num">8</span><span>&nbsp;&nbsp;&nbsp;&nbsp;}</span></div>
+          <div class="line-row"><span class="num">9</span><span>&nbsp;&nbsp;}</span></div>
+          <div class="line-row"><span class="num">10</span><span>}</span></div>
+        </div>
+
+      </div>
+
+      <!-- Accent Color Bar -->
+      <div class="palette-row">
+        <span>Accent Palette:</span>
+        <div class="swatches-bar">
+          <div class="swatch-dot active" style="background: #10b981;" onclick="applyTheme('#10b981', '16, 185, 129', this)" title="Emerald Green"></div>
+          <div class="swatch-dot" style="background: #1db954;" onclick="applyTheme('#1db954', '29, 185, 84', this)" title="Spotify Green"></div>
+          <div class="swatch-dot" style="background: #06b6d4;" onclick="applyTheme('#06b6d4', '6, 182, 212', this)" title="Cyber Cyan"></div>
+          <div class="swatch-dot" style="background: #8b5cf6;" onclick="applyTheme('#8b5cf6', '139, 92, 246', this)" title="Electric Violet"></div>
+          <div class="swatch-dot" style="background: #f97316;" onclick="applyTheme('#f97316', '249, 115, 22', this)" title="Sunset Orange"></div>
+          <div class="swatch-dot" style="background: #ec4899;" onclick="applyTheme('#ec4899', '236, 72, 153', this)" title="Sakura Pink"></div>
+          <div class="swatch-dot" style="background: #ffffff;" onclick="applyTheme('#ffffff', '255, 255, 255', this)" title="Frost White"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Pillars -->
+    <section class="features-section" id="features">
+      <div class="section-head">
+        <h2>Engineered for Deep Work</h2>
+        <p>No window clutter, no alt-tab interruptions, and zero compromises on desktop performance.</p>
+      </div>
+
+      <div class="grid-pillars">
+        <div class="pillar-card">
+          <div class="card-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <h3>Karaoke Mode Mingslep</h3>
+          <p>Synchronized lyrics are resolved in real time via LRCLIB and centered cleanly in a single line. The island dynamically breathes in and out to match the length of the vocal phrase.</p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="card-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+          </div>
+          <h3>Native C# WPF Performance</h3>
+          <p>Compiled down to an 80 KB standalone assembly. Requires no Node runtime, consumes under 20 MB of RAM, and boots in under 100 milliseconds.</p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="card-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <h3>Universal Dual-Engine Capture</h3>
+          <p>Pairs deterministic Win32 window scanner with WinRT SMTC session manager. Works instantly with Spotify Desktop, Spotify Web, Chrome, Edge, Brave, and YouTube.</p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="card-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3>Hardware Bezel Flush</h3>
+          <p>When paused, the island seamlessly retracts into an authentic 104×11px hardware camera sensor simulation flush against the top screen bezel.</p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="card-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          </div>
+          <h3>Direct Accent Persistence</h3>
+          <p>Seven balanced color themes written directly to local config. Visualizer bars, progress indicator, and vinyl cores reflect your palette without UI restarts.</p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="card-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <h3>Zero Installer Overhead</h3>
+          <p>Standalone portable executable with embedded multi-resolution icons. Includes automated 1-click desktop shortcut script for clean workspace integration.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Deep Dive Tabs -->
+    <section class="deep-dive">
+      <div class="section-head">
+        <h2>Under the Hood</h2>
+        <p>Explore the architecture choices that make MusicGan feel instantaneous.</p>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab(0, this)">Auto-Sizing Lyrics</button>
+        <button class="tab-btn" onclick="switchTab(1, this)">Dual Media Engines</button>
+        <button class="tab-btn" onclick="switchTab(2, this)">Native vs Electron</button>
+      </div>
+
+      <!-- Tab 0 -->
+      <div class="tab-content-panel active" id="tab0">
+        <div class="tab-info">
+          <h3>Adaptive Morphing Geometry</h3>
+          <p>Traditional overlay lyrics lock to a wide box that wastes screen estate. MusicGan runs real-time text layout measurements on each lyric update, morphing the island boundary to hug the text between 190px and 500px.</p>
+          <ul class="tab-bullets">
+            <li class="tab-bullet-item">
+              <svg class="bullet-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Sub-pixel string width measurement in memory</span>
+            </li>
+            <li class="tab-bullet-item">
+              <svg class="bullet-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Organic BackEase spring transition on phrase change</span>
+            </li>
+            <li class="tab-bullet-item">
+              <svg class="bullet-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Balanced 28px icon channels for strict center alignment</span>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-graphic">
+          <div class="graphic-row"><span>MIN_COLLAPSED_WIDTH</span><span class="graphic-val">190 px</span></div>
+          <div class="graphic-row"><span>MAX_COLLAPSED_WIDTH</span><span class="graphic-val">500 px</span></div>
+          <div class="graphic-row"><span>TRANSITION_DURATION</span><span class="graphic-val">320 ms</span></div>
+          <div class="graphic-row"><span>EASING_FUNCTION</span><span class="graphic-val">BackEaseOut (0.08)</span></div>
+          <div class="graphic-row"><span>LYRIC_PROVIDER</span><span class="graphic-val">LRCLIB Synced API</span></div>
+        </div>
+      </div>
+
+      <!-- Tab 1 -->
+      <div class="tab-content-panel" id="tab1">
+        <div class="tab-info">
+          <h3>Deterministic Media Hooking</h3>
+          <p>Rather than relying on brittle browser extensions or heavy background servers, MusicGan executes low-level Win32 window enumeration paired with Windows 10/11 GlobalSystemMediaTransportControls.</p>
+          <ul class="tab-bullets">
+            <li class="tab-bullet-item">
+              <svg class="bullet-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>0% CPU idle consumption with 450ms dispatch timer</span>
+            </li>
+            <li class="tab-bullet-item">
+              <svg class="bullet-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Zero external credentials or user login required</span>
+            </li>
+            <li class="tab-bullet-item">
+              <svg class="bullet-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Global virtual key simulation for universal Play/Pause/Skip</span>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-graphic">
+          <div class="graphic-row"><span>ENGINE_PRIMARY</span><span class="graphic-val">Win32 HWND Scanner</span></div>
+          <div class="graphic-row"><span>ENGINE_SECONDARY</span><span class="graphic-val">WinRT SMTC Session</span></div>
+          <div class="graphic-row"><span>THUMBNAIL_EXTRACTION</span><span class="graphic-val">IRandomAccessStream</span></div>
+          <div class="graphic-row"><span>SUPPORTED_PLAYERS</span><span class="graphic-val">Spotify, Chrome, Edge, Firefox</span></div>
+        </div>
+      </div>
+
+      <!-- Tab 2 -->
+      <div class="tab-content-panel" id="tab2">
+        <div class="tab-info">
+          <h3>Unapologetically Native</h3>
+          <p>Most modern desktop tools bundle an entire copy of Chromium and Node.js just to show a small widget. MusicGan is compiled directly with Microsoft .NET Framework C# compiler into a lean Windows PE binary.</p>
+          <ul class="tab-bullets">
+            <li class="tab-bullet-item">
+              <svg class="bullet-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Runs out of the box on standard Windows 10 & 11</span>
+            </li>
+            <li class="tab-bullet-item">
+              <svg class="bullet-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Zero node_modules, zero npm supply-chain dependencies</span>
+            </li>
+            <li class="tab-bullet-item">
+              <svg class="bullet-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Direct hardware-accelerated DirectWrite text rendering</span>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-graphic">
+          <div class="graphic-row"><span>RUNTIME</span><span class="graphic-val">.NET Framework 4.8</span></div>
+          <div class="graphic-row"><span>UI_SUBSYSTEM</span><span class="graphic-val">PresentationFramework WPF</span></div>
+          <div class="graphic-row"><span>DEPENDENCY_COUNT</span><span class="graphic-val">0 packages</span></div>
+          <div class="graphic-row"><span>OUTPUT_SIZE</span><span class="graphic-val">80 KB executable</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Comparison -->
+    <section class="compare-section" id="compare">
+      <div class="section-head">
+        <h2>Comparison Matrix</h2>
+        <p>See how native architecture stands apart from heavy web wrappers.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>Architecture Metric</th>
+              <th>MusicGan Native</th>
+              <th>Electron / Web Overlays</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Executable Size</td>
+              <td class="col-highlight">80 KB</td>
+              <td class="col-dim">150 MB – 250 MB</td>
+            </tr>
+            <tr>
+              <td>RAM Usage</td>
+              <td class="col-highlight">18 MB – 24 MB</td>
+              <td class="col-dim">180 MB – 350 MB</td>
+            </tr>
+            <tr>
+              <td>Cold Launch Time</td>
+              <td class="col-highlight">&lt; 100 ms</td>
+              <td class="col-dim">2.5 s – 4.5 s</td>
+            </tr>
+            <tr>
+              <td>Background Runtime</td>
+              <td class="col-highlight">Native Win32</td>
+              <td class="col-dim">Chromium + Node Helper</td>
+            </tr>
+            <tr>
+              <td>Installation Requirement</td>
+              <td class="col-highlight">None (Portable single EXE)</td>
+              <td class="col-dim">MSI / EXE Installer required</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing-wrap" id="pricing">
+      <div class="section-head">
+        <h2>Choose Your Edition</h2>
+        <p>Get started completely free or support ongoing development with Pro.</p>
+      </div>
+
+      <div class="pricing-cards">
+        <!-- Community -->
+        <div class="price-box">
+          <div>
+            <div class="plan-name">Community Edition</div>
+            <div class="plan-price">$0 <small>/ Free forever</small></div>
+            <div class="plan-desc">Fully functional standalone portable release. No ads, no account required.</div>
+            <ul class="plan-list">
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Dynamic Island Desktop Notch</span>
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Live Synced Lyrics Karaoke</span>
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Auto-Sizing Morphing Geometry</span>
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Spotify & YouTube Dual Detection</span>
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>7 Theme Color Presets</span>
+              </li>
+            </ul>
+          </div>
+          <a href="MusicGan-v1.2.zip" class="btn-plan btn-plan-free" download>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Free ZIP (69 KB)
+          </a>
+        </div>
+
+        <!-- Pro / Supporter -->
+        <div class="price-box pro">
+          <span class="price-tag-badge">SUPPORTER</span>
+          <div>
+            <div class="plan-name">MusicGan Pro</div>
+            <div class="plan-price">Rp 25.000 <small>/ $2.99 once</small></div>
+            <div class="plan-desc">Support independent software engineering and unlock priority roadmap updates.</div>
+            <ul class="plan-list">
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Everything in Community Edition</span>
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Priority Access to v1.3 & Feature Polls</span>
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Direct Feature Request Channel</span>
+              </li>
+              <li>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Exclusive Supporter Badge</span>
+              </li>
+            </ul>
+          </div>
+          <a href="https://lynk.id" target="_blank" rel="noopener" class="btn-plan btn-plan-pro">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Get Pro via Lynk.id / QRIS
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-wrap">
+      <div class="section-head" style="margin-bottom: 30px;">
+        <h2>Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-block">
+        <div class="faq-question">How do I run MusicGan after downloading?</div>
+        <div class="faq-answer">Extract <code>MusicGan-v1.2.zip</code> to any folder of your choice and launch <code>MusicGan.exe</code>. You can also run <code>create-desktop-shortcut.bat</code> once to place an icon directly on your Windows desktop.</div>
+      </div>
+
+      <div class="faq-block">
+        <div class="faq-question">Does MusicGan require administrator privileges?</div>
+        <div class="faq-answer">No. MusicGan runs entirely in standard user space without touching system directories, registry hives, or requiring UAC prompts.</div>
+      </div>
+
+      <div class="faq-block">
+        <div class="faq-question">Is macOS supported?</div>
+        <div class="faq-answer">This build is engineered natively for Windows 10 and 11 using WPF. A companion macOS edition built with native Swift and SwiftUI designed to dock against the MacBook hardware notch is currently in development.</div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 MusicGan. Crafted with precision & zero bloat.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Spotlight Mouse Tracker
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      document.documentElement.style.setProperty('--mouse-x', x + '%');
+      document.documentElement.style.setProperty('--mouse-y', y + '%');
+    });
+
+    // Simulator Interactive Engine
+    const simCatalog = [
+      {
+        title: "The Man Who Can't Be Moved",
+        artist: "The Script",
+        lines: [
+          "♪ Going back to the corner where I first saw you",
+          "♪ Gonna camp in my sleeping bag, I'm not moving",
+          "♪ Cause if one day you wake up and find that you're missing me",
+          "♪ And your heart starts to wonder where on earth I could be"
+        ]
+      },
+      {
+        title: "Starboy",
+        artist: "The Weeknd ft. Daft Punk",
+        lines: [
+          "♪ I'm tryna put you in the worst mood, ah",
+          "♪ P1 cleaner than your church shoes, ah",
+          "♪ Look what you've done, I'm a motherfuckin' starboy"
+        ]
+      },
+      {
+        title: "Komang",
+        artist: "Raim Laode",
+        lines: [
+          "♪ Dari kejauhan tergambar cerita tentang kita",
+          "♪ Terpisah jarak dan waktu",
+          "♪ Sebab kau terlalu indah dari sekedar kata"
+        ]
+      }
+    ];
+
+    let songIdx = 0;
+    let lyricIdx = 2;
+    let playing = true;
+
+    const island = document.getElementById('simIsland');
+    const lyricEl = document.getElementById('simLyric');
+    const titleEl = document.getElementById('simTitle');
+    const artistEl = document.getElementById('simArtist');
+    const playBtn = document.getElementById('simPlayBtn');
+
+    island.addEventListener('mouseenter', () => island.classList.add('expanded'));
+    island.addEventListener('mouseleave', () => {
+      island.classList.remove('expanded');
+      recalcPillWidth();
+    });
+
+    function recalcPillWidth() {
+      if (island.classList.contains('expanded')) return;
+      const len = lyricEl.innerText.length;
+      const w = Math.max(210, Math.min(480, len * 7.4 + 86));
+      island.style.width = w + 'px';
+    }
+
+    function renderSong() {
+      const s = simCatalog[songIdx];
+      titleEl.innerText = s.title;
+      artistEl.innerText = s.artist;
+      lyricEl.innerText = s.lines[lyricIdx];
+      recalcPillWidth();
+    }
+
+    function simNext(e) {
+      if (e) e.stopPropagation();
+      songIdx = (songIdx + 1) % simCatalog.length;
+      lyricIdx = 0;
+      renderSong();
+    }
+
+    function simPrev(e) {
+      if (e) e.stopPropagation();
+      songIdx = (songIdx - 1 + simCatalog.length) % simCatalog.length;
+      lyricIdx = 0;
+      renderSong();
+    }
+
+    function simToggle(e) {
+      if (e) e.stopPropagation();
+      playing = !playing;
+      playBtn.innerHTML = playing 
+        ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h3.5v14H6zm8.5 0H18v14h-3.5z"/></svg>'
+        : '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    }
+
+    // Auto rotate lyric lines
+    setInterval(() => {
+      if (!playing) return;
+      const s = simCatalog[songIdx];
+      lyricIdx = (lyricIdx + 1) % s.lines.length;
+      lyricEl.style.opacity = '0.25';
+      setTimeout(() => {
+        lyricEl.innerText = s.lines[lyricIdx];
+        lyricEl.style.opacity = '1';
+        recalcPillWidth();
+      }, 160);
+    }, 3600);
+
+    recalcPillWidth();
+
+    // Theme Switcher
+    function applyTheme(hex, rgb, el) {
+      document.documentElement.style.setProperty('--accent', hex);
+      document.documentElement.style.setProperty('--accent-rgb', rgb);
+      document.querySelectorAll('.swatch-dot').forEach(d => d.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // Tab Switcher
+    function switchTab(index, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById('tab' + index);
+      if (panel) panel.classList.add('active');
+    }
+  </script>
+</body>
+</html>
