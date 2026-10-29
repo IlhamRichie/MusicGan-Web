@@ -78,6 +78,16 @@ python -m http.server 8080
 
 ---
 
+## Creator & Support
+
+Crafted with passion by **[Ilham Richie](https://richie-portfolio.vercel.app/#home)**.
+
+- ☕ **Support & Amal Jariyah via Saweria:** [saweria.co/rigannnnn](https://saweria.co/rigannnnn)
+- 📷 **Instagram:** [@maachigan](https://www.instagram.com/maachigan)
+- 🌐 **Portfolio:** [richie-portfolio.vercel.app](https://richie-portfolio.vercel.app/#home)
+
+---
+
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.

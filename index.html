@@ -883,6 +883,29 @@
       filter: brightness(1.08);
       transform: translateY(-1px);
     }
+    .btn-plan-saweria {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35);
+      font-weight: 700;
+    }
+    .btn-plan-saweria:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+    .btn-plan-ig {
+      background: var(--surface-2);
+      color: var(--text-1);
+      border: 1px solid var(--border);
+      margin-top: 10px;
+      font-size: 0.85rem;
+      padding: 10px 0;
+    }
+    .btn-plan-ig:hover {
+      background: var(--surface-3);
+      border-color: rgba(236, 72, 153, 0.4);
+      color: #f472b6;
+    }
 
     /* FAQ */
     .faq-wrap {
@@ -923,199 +946,6 @@
     @keyframes barDance {
       0% { transform: scaleY(0.35); }
       100% { transform: scaleY(1.3); }
-    }
-
-    /* QRIS Modal Styles */
-    .modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(4, 4, 6, 0.82);
-      backdrop-filter: blur(14px);
-      z-index: 999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-    .modal-backdrop.active {
-      display: flex;
-      opacity: 1;
-    }
-    .modal-card {
-      background: var(--surface-1);
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      width: 100%;
-      max-width: 480px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
-      position: relative;
-      padding: 30px 28px;
-      transform: scale(0.96);
-      transition: transform 0.25s ease;
-    }
-    .modal-backdrop.active .modal-card {
-      transform: scale(1);
-    }
-    .modal-close-btn {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--text-2);
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 13px;
-      transition: all 0.15s ease;
-    }
-    .modal-close-btn:hover {
-      background: var(--surface-3);
-      color: #fff;
-    }
-    .modal-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--accent-subtle);
-      border: 1px solid rgba(var(--accent-rgb), 0.3);
-      color: var(--accent);
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 999px;
-      letter-spacing: 0.04em;
-      margin-bottom: 12px;
-    }
-    .modal-title {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-    }
-    .modal-subtitle {
-      color: var(--text-2);
-      font-size: 0.86rem;
-      line-height: 1.5;
-      margin-bottom: 22px;
-    }
-    .qris-box-card {
-      background: #ffffff;
-      border-radius: var(--radius-md);
-      padding: 16px;
-      text-align: center;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-    .qris-header-logo {
-      font-weight: 800;
-      color: #111827;
-      font-size: 1.1rem;
-      letter-spacing: 0.08em;
-      margin-bottom: 4px;
-    }
-    .qris-img-container {
-      width: 220px;
-      height: 220px;
-      margin: 8px auto;
-      border-radius: 8px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-    }
-    .qris-img-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .qris-nominal-chip {
-      display: inline-block;
-      background: #0f172a;
-      color: #38bdf8;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 1.15rem;
-      padding: 6px 16px;
-      border-radius: 999px;
-      margin-top: 6px;
-    }
-    .qris-banks-row {
-      color: #64748b;
-      font-size: 0.72rem;
-      margin-top: 8px;
-      font-weight: 500;
-    }
-    .form-group {
-      margin-bottom: 14px;
-      text-align: left;
-    }
-    .form-label {
-      display: block;
-      color: var(--text-2);
-      font-size: 0.82rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .form-input {
-      width: 100%;
-      background: var(--surface-2);
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      color: var(--text-1);
-      font-family: inherit;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.15s ease;
-    }
-    .form-input:focus {
-      border-color: var(--accent);
-    }
-    .key-display-box {
-      background: var(--surface-2);
-      border: 1px solid rgba(var(--accent-rgb), 0.4);
-      border-radius: var(--radius-md);
-      padding: 18px;
-      text-align: center;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.08);
-    }
-    .key-mono-text {
-      font-family: var(--font-mono);
-      font-size: 1.18rem;
-      font-weight: 700;
-      color: #34d399;
-      letter-spacing: 0.05em;
-      margin-bottom: 10px;
-      word-break: break-all;
-    }
-    .step-guide-card {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 14px;
-      font-size: 0.82rem;
-      color: var(--text-2);
-      margin-bottom: 18px;
-      line-height: 1.6;
-    }
-    .step-guide-card ol {
-      padding-left: 18px;
     }
 
     /* Mobile Navigation & Toggle */
@@ -1373,54 +1203,6 @@
       .pillar-card {
         padding: 20px 16px;
       }
-
-      /* Modal Reflow */
-      .modal-backdrop {
-        padding: 10px;
-      }
-      .modal-card {
-        padding: 22px 16px;
-        border-radius: 16px;
-        max-height: 94vh;
-      }
-      .modal-title {
-        font-size: 1.15rem;
-      }
-      .modal-subtitle {
-        font-size: 0.8rem;
-        margin-bottom: 16px;
-      }
-      .qris-box-card {
-        padding: 12px 10px;
-        margin-bottom: 16px;
-      }
-      .qris-header-logo {
-        font-size: 0.8rem;
-      }
-      .qris-img-container {
-        width: 100% !important;
-        max-width: 200px !important;
-        margin: 6px auto !important;
-      }
-      .qris-nominal-chip {
-        font-size: 1rem;
-        padding: 4px 14px;
-      }
-      .qris-banks-row {
-        font-size: 0.68rem;
-      }
-      .form-input {
-        height: 46px;
-        font-size: 16px; /* Stop iOS Safari viewport zoom */
-        padding: 8px 12px;
-      }
-      .key-mono-text {
-        font-size: 1rem;
-      }
-      .step-guide-card {
-        padding: 12px;
-        font-size: 0.78rem;
-      }
     }
   </style>
 </head>
@@ -1445,14 +1227,16 @@
       </button>
 
       <div class="nav-menu" id="navMenu">
-        <a href="#simulator" class="nav-item" onclick="closeMobileNav()">Interactive Demo</a>
+        <a href="#simulator" class="nav-item" onclick="closeMobileNav()">Demo</a>
         <a href="#features" class="nav-item" onclick="closeMobileNav()">Features</a>
         <a href="#compare" class="nav-item" onclick="closeMobileNav()">Specs</a>
-        <a href="#pricing" class="nav-item" onclick="closeMobileNav()">Pricing</a>
-        <a href="https://richie-portfolio.vercel.app/#home" target="_blank" rel="noopener" class="nav-item nav-item-highlight">By Ilham Richie ↗</a>
+        <a href="#pricing" class="nav-item" onclick="closeMobileNav()">Download</a>
+        <a href="https://saweria.co/rigannnnn" target="_blank" rel="noopener" class="nav-item" onclick="closeMobileNav()" style="color: #f59e0b; font-weight: 600;">☕ Saweria</a>
+        <a href="https://www.instagram.com/maachigan" target="_blank" rel="noopener" class="nav-item" onclick="closeMobileNav()">📷 @maachigan</a>
+        <a href="https://richie-portfolio.vercel.app/#home" target="_blank" rel="noopener" class="nav-item nav-item-highlight">Ilham Richie ↗</a>
         <a href="MusicGan-v1.2.zip" class="btn-nav" download onclick="closeMobileNav()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download
+          Download Free
         </a>
       </div>
     </div>
@@ -1806,20 +1590,21 @@
       </div>
     </section>
 
-    <!-- Pricing -->
+    <!-- Pricing / Open Source & Saweria -->
     <section class="pricing-wrap" id="pricing">
       <div class="section-head">
-        <h2>Choose Your Edition</h2>
-        <p>Get started completely free or support ongoing development with Pro.</p>
+        <h2>100% Gratis & Open-Source</h2>
+        <p>Semua fitur Pro kini terbuka penuh untuk semua orang. Dibuat dengan tulus untuk menyenangkan sesama pecinta musik di Windows.</p>
       </div>
 
       <div class="pricing-cards">
-        <!-- Community -->
+        <!-- Community Edition -->
         <div class="price-box">
+          <span class="price-tag-badge" style="background: rgba(16, 185, 129, 0.12); color: var(--accent); border-color: rgba(16, 185, 129, 0.3);">FULL UNLOCKED</span>
           <div>
             <div class="plan-name">Community Edition</div>
-            <div class="plan-price">$0 <small>/ Free forever</small></div>
-            <div class="plan-desc">Fully functional standalone portable release. No ads, no account required.</div>
+            <div class="plan-price">Rp 0 <small>/ Gratis Selamanya</small></div>
+            <div class="plan-desc">Aplikasi native portabel tanpa instalasi. Semua fitur Pro terbuka 100% tanpa lisensi.</div>
             <ul class="plan-list">
               <li>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1827,19 +1612,19 @@
               </li>
               <li>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Live Synced Lyrics Karaoke</span>
+                <span>Live Synced Lyrics Karaoke (Spotify & YouTube)</span>
               </li>
               <li>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Auto-Sizing Morphing Geometry</span>
+                <span>7 Pilihan Palet Warna Aksen Lengkap</span>
               </li>
               <li>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Spotify & YouTube Dual Detection</span>
+                <span>100% Portabel Single EXE (~70 KB)</span>
               </li>
               <li>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>7 Theme Color Presets</span>
+                <span>Ringan & Cepat (RAM &lt; 20 MB, 0% Electron)</span>
               </li>
             </ul>
           </div>
@@ -1849,40 +1634,46 @@
           </a>
         </div>
 
-        <!-- Pro / Supporter -->
-        <div class="price-box pro">
-          <span class="price-tag-badge">SUPPORTER</span>
+        <!-- Saweria / Supporter -->
+        <div class="price-box pro" style="border-color: #f59e0b; box-shadow: 0 16px 40px rgba(245, 158, 11, 0.12);">
+          <span class="price-tag-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">AMAL JARIYAH</span>
           <div>
-            <div class="plan-name">MusicGan Pro</div>
-            <div class="plan-price">Rp 10.000 <small>/ Akses Seumur Hidup</small></div>
-            <div class="plan-desc">Buka seluruh fitur pro, dapatkan License Key instan via QRIS, dan dukung kreator independen.</div>
+            <div class="plan-name">Traktir Kopi di Saweria</div>
+            <div class="plan-price">Sukarela <small>/ Donasi Bebas</small></div>
+            <div class="plan-desc">Jika MusicGan bermanfaat untukmu, dukung kreator independen untuk biaya server & pengembangan v1.3.</div>
             <ul class="plan-list">
               <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Semua Fitur di Community Edition</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="#f59e0b"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Dukung Penuh Kreator (Ilham Richie)</span>
               </li>
               <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Akses Penuh Lirik Sing-Along Melayang</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="#f59e0b"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Bebas Pilih Nominal (Mulai Rp 1.000)</span>
               </li>
               <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>7 Pilihan Palet Warna Aksen Eksklusif</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="#f59e0b"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Mendukung QRIS, GoPay, OVO, Dana, ShopeePay</span>
               </li>
               <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>License Key Resmi Terverifikasi</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="#f59e0b"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Tinggalkan Pesan & Request Fitur di Saweria</span>
               </li>
               <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--accent)"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Prioritas Update & Akses Fitur Baru v1.3</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="#f59e0b"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Amal Jariyah Membantu Ekosistem Open-Source</span>
               </li>
             </ul>
           </div>
-          <button type="button" class="btn-plan btn-plan-pro" onclick="openQrisModal()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            Dapatkan Pro via QRIS (Rp 10.000)
-          </button>
+          <div>
+            <a href="https://saweria.co/rigannnnn" target="_blank" rel="noopener" class="btn-plan btn-plan-saweria">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+              Traktir Kopi di Saweria ↗
+            </a>
+            <a href="https://www.instagram.com/maachigan" target="_blank" rel="noopener" class="btn-plan btn-plan-ig">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Follow Instagram @maachigan ↗
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -1891,113 +1682,63 @@
     <section class="faq-wrap">
       <div class="section-head" style="margin-bottom: 30px;">
         <h2>Frequently Asked Questions</h2>
+        <p>Pertanyaan umum seputar penggunaan, keamanan, dan instalasi MusicGan.</p>
       </div>
 
       <div class="faq-block">
-        <div class="faq-question">Bagaimana cara mendapatkan License Key setelah bayar QRIS?</div>
-        <div class="faq-answer">Setelah kamu scan QRIS sebesar Rp 10.000, isi nama dan nomor WA kamu pada form di website ini. License key resmi langsung digenerate di layar dalam 5 detik dan siap kamu masukkan ke aplikasi!</div>
+        <div class="faq-question">Kenapa muncul peringatan "Windows protected your PC" atau file mencurigakan saat download?</div>
+        <div class="faq-answer">
+          Tenang, ini <strong>100% aman dan bukan virus!</strong> MusicGan adalah software independen open-source yang baru dirilis sehingga belum memiliki reputasi jutaan unduhan di Microsoft SmartScreen dan belum membeli sertifikat digital berbayar (EV Code Signing yang biayanya Rp 5–7 juta per tahun).<br><br>
+          <strong>Solusinya sangat mudah:</strong><br>
+          Saat muncul jendela biru SmartScreen, klik <strong>"More info" (Info selengkapnya)</strong> &rarr; lalu klik tombol <strong>"Run anyway" (Tetap jalankan)</strong>. Aplikasi langsung berjalan lancar!
+        </div>
       </div>
 
       <div class="faq-block">
-        <div class="faq-question">Bagaimana cara memasukkan License Key di aplikasi?</div>
-        <div class="faq-answer">Buka MusicGan di laptop > Klik kanan pada pil Dynamic Island > Pilih menu <strong>"🔑 Masukkan License Key Pro"</strong> > Tempel key yang kamu dapatkan > Klik Aktifkan!</div>
+        <div class="faq-question">Apakah aplikasi ini benar-benar 100% gratis?</div>
+        <div class="faq-answer">
+          Ya, <strong>100% gratis selamanya</strong> untuk semua orang! Seluruh fitur—termasuk Dynamic Island notch, lirik karaoke melayang real-time, dan 7 palet warna aksen—sudah terbuka tanpa batasan waktu ataupun license key.
+        </div>
       </div>
 
       <div class="faq-block">
-        <div class="faq-question">Apakah pembayaran Rp 10.000 ini berlangganan atau sekali bayar?</div>
-        <div class="faq-answer">Sekali bayar seumur hidup (lifetime). Tidak ada biaya bulanan atau langganan tersembunyi.</div>
+        <div class="faq-question">Bagaimana cara menjalankan MusicGan di Windows?</div>
+        <div class="faq-answer">
+          Download file <code>MusicGan-v1.2.zip</code>, ekstrak ke folder mana saja di laptop kamu, lalu double-click <code>MusicGan.exe</code>. Aplikasi bersifat portabel murni dan tidak membutuhkan instalasi yang membebani registry sistem.
+        </div>
+      </div>
+
+      <div class="faq-block">
+        <div class="faq-question">Bagaimana cara mengganti warna atau menutup aplikasi?</div>
+        <div class="faq-answer">
+          Cukup <strong>klik kanan</strong> pada pil Dynamic Island di bagian atas layar monitor. Menu konteks akan muncul untuk memilih 7 warna aksen tema, mengatur offset posisi, membuka Saweria/Instagram kreator, atau menutup aplikasi.
+        </div>
       </div>
     </section>
 
   </div>
 
-  <!-- QRIS Checkout & Instant License Modal -->
-  <div class="modal-backdrop" id="qrisModal" onclick="handleBackdropClick(event)">
-    <div class="modal-card">
-      <button class="modal-close-btn" onclick="closeQrisModal()">✕</button>
-
-      <!-- VIEW 1: QRIS & Form -->
-      <div id="modalStep1">
-        <div class="modal-tag">LIFETIME ACCESS • RP 10.000</div>
-        <div class="modal-title">Aktivasi MusicGan Pro</div>
-        <div class="modal-subtitle">Scan QRIS di bawah dengan GoPay, OVO, Dana, ShopeePay, BCA, atau bank apa saja.</div>
-
-        <div class="qris-box-card">
-          <div class="qris-header-logo">M. ILHAM RIGAN AGACHI • DIGITAL & KREATIF</div>
-          <div class="qris-img-container" style="width: 240px; height: auto; max-height: 340px; border: none; background: transparent; margin: 10px auto;">
-            <img src="qris.jpg" alt="QRIS M. ILHAM RIGAN AGACHI" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);">
-          </div>
-          <div>
-            <span class="qris-nominal-chip">Rp 10.000</span>
-          </div>
-          <div class="qris-banks-row">
-            Mendukung: GoPay • OVO • Dana • ShopeePay • BCA • Mandiri • BRI • BNI • Semua Bank
-          </div>
-        </div>
-
-        <form id="qrisForm" onsubmit="submitQrisPayment(event)">
-          <div class="form-group">
-            <label class="form-label" for="buyerName">Nama Lengkap Kamu</label>
-            <input type="text" id="buyerName" class="form-input" placeholder="Contoh: Rigan Agassi" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="buyerContact">Nomor WhatsApp / Email</label>
-            <input type="text" id="buyerContact" class="form-input" placeholder="Contoh: 08123456789 atau rigan@gmail.com" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="buyerRef">Nama Pengirim Rekening / Catatan</label>
-            <input type="text" id="buyerRef" class="form-input" placeholder="Contoh: Transfer atas nama Rigan / BCA" required>
-          </div>
-          <button type="submit" class="btn-plan btn-plan-pro" id="btnSubmitQris" style="cursor:pointer; margin-top: 10px;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            Konfirmasi & Ambil License Key ⚡
-          </button>
-        </form>
-      </div>
-
-      <!-- VIEW 2: Success & Instant License Key -->
-      <div id="modalStep2" style="display: none; text-align: center;">
-        <div class="modal-tag" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.4);">
-          PEMBAYARAN DITERIMA • KEY SIAP DIPAKAI
-        </div>
-        <div class="modal-title">Selamat! Akses Pro Aktif</div>
-        <div class="modal-subtitle">Berikut adalah License Key resmi untuk MusicGan kamu di Windows.</div>
-
-        <div class="key-display-box">
-          <div style="font-size: 0.76rem; color: var(--text-2); margin-bottom: 6px; font-weight: 600;">LISENSI RESMI KAMU:</div>
-          <div class="key-mono-text" id="displayLicenseKey">MG-PRO-XXXX-YYYY-RICHIE</div>
-          <button type="button" class="btn-plan btn-plan-free" onclick="copyLicenseKey()" id="btnCopyKey" style="width: auto; padding: 6px 18px; margin: 0 auto; font-size: 0.8rem; cursor: pointer;">
-            Salin License Key
-          </button>
-        </div>
-
-        <div class="step-guide-card">
-          <div style="font-weight: 700; color: #fff; margin-bottom: 6px;">Cara Aktivasi di Laptop:</div>
-          <ol>
-            <li>Buka <code>MusicGan.exe</code> di laptop Windows kamu.</li>
-            <li>Klik kanan pada pil Dynamic Island di atas layar.</li>
-            <li>Pilih menu <strong>"🔑 Masukkan License Key Pro"</strong>.</li>
-            <li>Tempel (Paste) key di atas dan klik <strong>"Aktifkan Lisensi Pro"</strong>.</li>
-          </ol>
-        </div>
-
-        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-          <a href="MusicGan-v1.2.zip" class="btn-plan btn-plan-free" style="flex: 1; min-width: 160px;" download>
-            Download MusicGan (.ZIP)
-          </a>
-          <a id="btnWaConfirm" href="#" target="_blank" rel="noopener" class="btn-plan btn-plan-pro" style="flex: 1; min-width: 160px;">
-            Chat Developer di WA ↗
-          </a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <p>&copy; 2026 MusicGan. Crafted with precision & zero bloat by <a href="https://richie-portfolio.vercel.app/#home" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; font-weight:600;">Ilham Richie</a>.</p>
+    <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;">
+      <p>&copy; 2026 MusicGan. 100% Free & Open-Source. Crafted with precision & zero bloat by <a href="https://richie-portfolio.vercel.app/#home" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none; font-weight:600;">Ilham Richie</a>.</p>
+      <div style="display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap; font-size: 0.86rem;">
+        <a href="https://saweria.co/rigannnnn" target="_blank" rel="noopener" style="color: #f59e0b; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+          ☕ Saweria Donasi
+        </a>
+        <span style="color: var(--text-3);">•</span>
+        <a href="https://www.instagram.com/maachigan" target="_blank" rel="noopener" style="color: var(--text-2); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+          📷 Instagram @maachigan
+        </a>
+        <span style="color: var(--text-3);">•</span>
+        <a href="https://github.com/IlhamRichie/MusicGan-Desktop" target="_blank" rel="noopener" style="color: var(--text-2); text-decoration: none;">
+          GitHub Repository
+        </a>
+        <span style="color: var(--text-3);">•</span>
+        <a href="https://richie-portfolio.vercel.app/#home" target="_blank" rel="noopener" style="color: var(--text-2); text-decoration: none;">
+          Portfolio
+        </a>
+      </div>
     </div>
   </footer>
 
@@ -2172,97 +1913,6 @@
       document.documentElement.style.setProperty('--accent-rgb', rgb);
       document.querySelectorAll('.swatch-dot').forEach(d => d.classList.remove('active'));
       el.classList.add('active');
-    }
-
-    // QRIS Modal Logic
-    const qrisModal = document.getElementById('qrisModal');
-    const modalStep1 = document.getElementById('modalStep1');
-    const modalStep2 = document.getElementById('modalStep2');
-    const displayLicenseKey = document.getElementById('displayLicenseKey');
-    const btnSubmitQris = document.getElementById('btnSubmitQris');
-    const btnCopyKey = document.getElementById('btnCopyKey');
-    const btnWaConfirm = document.getElementById('btnWaConfirm');
-
-    function openQrisModal() {
-      modalStep1.style.display = 'block';
-      modalStep2.style.display = 'none';
-      qrisModal.classList.add('active');
-    }
-
-    function closeQrisModal() {
-      qrisModal.classList.remove('active');
-    }
-
-    function handleBackdropClick(e) {
-      if (e.target === qrisModal) closeQrisModal();
-    }
-
-    function generateKey() {
-      const chars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ';
-      let r1 = '';
-      let r2 = '';
-      for (let i = 0; i < 4; i++) r1 += chars.charAt(Math.floor(Math.random() * chars.length));
-      for (let i = 0; i < 4; i++) r2 += chars.charAt(Math.floor(Math.random() * chars.length));
-      return `MG-PRO-${r1}-${r2}-RICHIE`;
-    }
-
-    function submitQrisPayment(e) {
-      e.preventDefault();
-      const name = document.getElementById('buyerName').value.trim();
-      const contact = document.getElementById('buyerContact').value.trim();
-      const ref = document.getElementById('buyerRef').value.trim();
-
-      if (!name || !contact) return;
-
-      btnSubmitQris.disabled = true;
-      btnSubmitQris.innerHTML = 'Memproses Key...';
-
-      const key = generateKey();
-
-      // Send payment & key notification to Google Apps Script Gateway -> Telegram
-      const gasUrl = 'https://script.google.com/macros/s/AKfycbwWgym41hC4nv-ipSupuYvbl-2g1I8xoN--459MVwkVhNdkTS3a04iuS9bRrxQdd8iP/exec';
-      const nowStr = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
-      const telegramMsg = 
-        `💰 *PEMBAYARAN BARU RP 10.000 (QRIS)!*\n` +
-        `━━━━━━━━━━━━━━━━━━\n` +
-        `👤 *Pembeli:* ${name}\n` +
-        `📱 *Kontak:* ${contact}\n` +
-        `💳 *Ref / Pengirim:* ${ref}\n` +
-        `🔑 *License Key:* \`${key}\`\n` +
-        `⏱ *Waktu:* ${nowStr} WIB\n` +
-        `━━━━━━━━━━━━━━━━━━\n` +
-        `💡 *Cek mutasi masuk Rp 10.000 di rekening/e-wallet kamu!*`;
-
-      try {
-        fetch(gasUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: telegramMsg })
-        });
-      } catch (err) {}
-
-      // Update UI to Step 2
-      setTimeout(() => {
-        displayLicenseKey.innerText = key;
-        btnSubmitQris.disabled = false;
-        btnSubmitQris.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Konfirmasi & Ambil License Key ⚡';
-        
-        // Setup WA link with pre-filled message
-        const waMsg = encodeURIComponent(`Halo Ilham Richie, saya sudah bayar QRIS Rp 10.000 untuk MusicGan Pro.\nNama: ${name}\nRef: ${ref}\nLicense Key: ${key}`);
-        btnWaConfirm.href = `https://wa.me/?text=${waMsg}`;
-
-        modalStep1.style.display = 'none';
-        modalStep2.style.display = 'block';
-      }, 350);
-    }
-
-    function copyLicenseKey() {
-      const key = displayLicenseKey.innerText;
-      navigator.clipboard.writeText(key).then(() => {
-        btnCopyKey.innerText = 'Tersalin ke Clipboard! ✓';
-        setTimeout(() => btnCopyKey.innerText = 'Salin License Key', 2000);
-      });
     }
 
     // Tab Switcher
