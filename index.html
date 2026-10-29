@@ -34,11 +34,17 @@
       box-sizing: border-box;
     }
 
+    html {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+
     body {
       background-color: var(--bg);
       color: var(--text-1);
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       overflow-x: hidden;
+      max-width: 100vw;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       position: relative;
@@ -573,7 +579,7 @@
     }
     .grid-pillars {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
     }
     .pillar-card {
@@ -725,13 +731,25 @@
       background: var(--surface-1);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      overflow: hidden;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .comp-table {
       width: 100%;
+      min-width: 520px;
       border-collapse: collapse;
       text-align: left;
       font-size: 0.9rem;
+    }
+    .table-scroll-hint {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--text-3);
+      margin-bottom: 12px;
+      text-align: center;
     }
     .comp-table th {
       background: var(--surface-2);
@@ -763,7 +781,7 @@
     }
     .pricing-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
       max-width: 780px;
       margin: 0 auto;
@@ -1100,10 +1118,309 @@
       padding-left: 18px;
     }
 
+    /* Mobile Navigation & Toggle */
+    .nav-toggle {
+      display: none;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      width: 42px;
+      height: 42px;
+      color: #fff;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .nav-toggle:hover {
+      background: var(--surface-3);
+      border-color: var(--border-strong);
+    }
+
+    /* Tablet & Small Laptop (max-width: 880px) */
+    @media (max-width: 880px) {
+      .nav-inner {
+        padding: 12px 18px;
+        position: relative;
+      }
+      .nav-toggle {
+        display: flex;
+      }
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 10, 14, 0.98);
+        backdrop-filter: blur(24px);
+        border-bottom: 1px solid var(--border-strong);
+        padding: 18px 20px 24px 20px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        box-shadow: 0 24px 50px rgba(0, 0, 0, 0.9);
+      }
+      .nav-menu.mobile-open {
+        display: flex;
+      }
+      .nav-item {
+        padding: 12px 16px;
+        border-radius: var(--radius-sm);
+        background: var(--surface-1);
+        border: 1px solid var(--border);
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .nav-item-highlight {
+        color: var(--accent) !important;
+        font-weight: 600;
+        border-color: rgba(var(--accent-rgb), 0.35);
+      }
+      .btn-nav {
+        width: 100%;
+        justify-content: center;
+        padding: 13px 0;
+        font-size: 0.95rem;
+        border-radius: var(--radius-sm);
+        margin-top: 4px;
+      }
+    }
+
+    /* Mobile Tablets & Large Phones (max-width: 768px) */
     @media (max-width: 768px) {
-      .tab-content-panel { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 2.2rem; }
-      .nav-menu { gap: 14px; }
+      .container {
+        padding: 0 18px;
+      }
+      .hero {
+        padding: 56px 0 32px 0;
+      }
+      .hero h1 {
+        font-size: clamp(2rem, 7vw, 2.8rem);
+        line-height: 1.15;
+      }
+      .hero-sub {
+        font-size: 0.98rem;
+        margin-bottom: 24px;
+      }
+      .features-section, .deep-dive, .compare-section, .pricing-wrap {
+        padding: 48px 0;
+      }
+      .section-head {
+        margin-bottom: 28px;
+      }
+      .section-head h2 {
+        font-size: 1.65rem;
+      }
+      .section-head p {
+        font-size: 0.88rem;
+      }
+      .table-scroll-hint {
+        display: flex;
+      }
+      .comp-table th, .comp-table td {
+        padding: 12px 14px;
+        font-size: 0.82rem;
+      }
+      .tab-bar {
+        gap: 6px;
+        margin-bottom: 22px;
+      }
+      .tab-btn {
+        padding: 8px 12px;
+        font-size: 0.78rem;
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+      .tab-content-panel {
+        grid-template-columns: 1fr;
+        padding: 22px 18px;
+        gap: 20px;
+      }
+      .tab-info h3 {
+        font-size: 1.25rem;
+      }
+      .tab-graphic {
+        padding: 16px 12px;
+        font-size: 0.75rem;
+      }
+      .pricing-cards {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        gap: 20px;
+      }
+      .price-box {
+        padding: 26px 20px;
+      }
+      .plan-price {
+        font-size: 1.95rem;
+      }
+
+      /* Simulator Mobile Reflow */
+      .simulator-wrap {
+        margin: 20px auto 50px auto;
+      }
+      .monitor-bezel {
+        min-height: 290px;
+        border-radius: 14px;
+      }
+      .monitor-bar {
+        padding: 0 10px;
+        font-size: 0.65rem;
+      }
+      .monitor-bar span:nth-child(2) {
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .island-stage {
+        top: 28px;
+        width: calc(100% - 16px);
+        max-width: 360px;
+      }
+      .island-pill {
+        max-width: 100% !important;
+      }
+      .island-pill.expanded {
+        width: calc(100% - 8px) !important;
+        max-width: 340px !important;
+        height: auto;
+        min-height: 72px;
+        padding: 8px 10px;
+      }
+      .art-shell {
+        width: 44px;
+        height: 44px;
+      }
+      .art-disc {
+        width: 34px;
+        height: 34px;
+      }
+      .meta-name {
+        font-size: 11.5px;
+      }
+      .meta-sub {
+        font-size: 10px;
+        margin-bottom: 4px;
+      }
+      .ctrl-btn {
+        width: 32px;
+        height: 32px;
+      }
+      .editor-canvas {
+        padding: 80px 12px 16px 12px;
+        font-size: 0.72rem;
+      }
+      .palette-row {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .swatches-bar {
+        gap: 10px;
+      }
+      .swatch-dot {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    /* Small Mobile Phones (max-width: 540px) */
+    @media (max-width: 540px) {
+      .container {
+        padding: 0 14px;
+      }
+      .hero {
+        padding: 42px 0 24px 0;
+      }
+      .badge-pill {
+        font-size: 0.72rem;
+        padding: 4px 12px;
+        margin-bottom: 18px;
+      }
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto 24px auto;
+      }
+      .btn-cta, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 20px;
+        min-height: 48px;
+      }
+      .spec-badges {
+        gap: 6px;
+      }
+      .spec-badges span {
+        background: var(--surface-1);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 0.72rem;
+      }
+      .spec-sep {
+        display: none;
+      }
+      .grid-pillars {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .pillar-card {
+        padding: 20px 16px;
+      }
+
+      /* Modal Reflow */
+      .modal-backdrop {
+        padding: 10px;
+      }
+      .modal-card {
+        padding: 22px 16px;
+        border-radius: 16px;
+        max-height: 94vh;
+      }
+      .modal-title {
+        font-size: 1.15rem;
+      }
+      .modal-subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 16px;
+      }
+      .qris-box-card {
+        padding: 12px 10px;
+        margin-bottom: 16px;
+      }
+      .qris-header-logo {
+        font-size: 0.8rem;
+      }
+      .qris-img-container {
+        width: 100% !important;
+        max-width: 200px !important;
+        margin: 6px auto !important;
+      }
+      .qris-nominal-chip {
+        font-size: 1rem;
+        padding: 4px 14px;
+      }
+      .qris-banks-row {
+        font-size: 0.68rem;
+      }
+      .form-input {
+        height: 46px;
+        font-size: 16px; /* Stop iOS Safari viewport zoom */
+        padding: 8px 12px;
+      }
+      .key-mono-text {
+        font-size: 1rem;
+      }
+      .step-guide-card {
+        padding: 12px;
+        font-size: 0.78rem;
+      }
     }
   </style>
 </head>
@@ -1120,13 +1437,20 @@
         </div>
         <span>MusicGan</span>
       </a>
-      <div class="nav-menu">
-        <a href="#simulator" class="nav-item">Interactive Demo</a>
-        <a href="#features" class="nav-item">Features</a>
-        <a href="#compare" class="nav-item">Specs</a>
-        <a href="#pricing" class="nav-item">Pricing</a>
-        <a href="https://richie-portfolio.vercel.app/#home" target="_blank" rel="noopener" class="nav-item" style="color:var(--accent); font-weight:600;">By Ilham Richie ↗</a>
-        <a href="MusicGan-v1.2.zip" class="btn-nav" download>
+
+      <!-- Mobile Nav Toggle -->
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" onclick="toggleMobileNav()">
+        <svg class="icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg class="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <div class="nav-menu" id="navMenu">
+        <a href="#simulator" class="nav-item" onclick="closeMobileNav()">Interactive Demo</a>
+        <a href="#features" class="nav-item" onclick="closeMobileNav()">Features</a>
+        <a href="#compare" class="nav-item" onclick="closeMobileNav()">Specs</a>
+        <a href="#pricing" class="nav-item" onclick="closeMobileNav()">Pricing</a>
+        <a href="https://richie-portfolio.vercel.app/#home" target="_blank" rel="noopener" class="nav-item nav-item-highlight">By Ilham Richie ↗</a>
+        <a href="MusicGan-v1.2.zip" class="btn-nav" download onclick="closeMobileNav()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download
         </a>
@@ -1437,6 +1761,11 @@
         <p>See how native architecture stands apart from heavy web wrappers.</p>
       </div>
 
+      <div class="table-scroll-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        Geser tabel ke samping untuk melihat spek lengkap &rarr;
+      </div>
+
       <div class="table-wrapper">
         <table class="comp-table">
           <thead>
@@ -1717,24 +2046,80 @@
     let lyricIdx = 2;
     let playing = true;
 
+    // Mobile Nav Toggle
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    function toggleMobileNav() {
+      const isOpen = navMenu.classList.toggle('mobile-open');
+      const iconOpen = navToggle.querySelector('.icon-open');
+      const iconClose = navToggle.querySelector('.icon-close');
+      if (isOpen) {
+        iconOpen.style.display = 'none';
+        iconClose.style.display = 'block';
+      } else {
+        iconOpen.style.display = 'block';
+        iconClose.style.display = 'none';
+      }
+    }
+    function closeMobileNav() {
+      navMenu.classList.remove('mobile-open');
+      const iconOpen = navToggle.querySelector('.icon-open');
+      const iconClose = navToggle.querySelector('.icon-close');
+      if (iconOpen && iconClose) {
+        iconOpen.style.display = 'block';
+        iconClose.style.display = 'none';
+      }
+    }
+    document.addEventListener('click', (e) => {
+      if (!navMenu.contains(e.target) && !navToggle.contains(e.target) && navMenu.classList.contains('mobile-open')) {
+        closeMobileNav();
+      }
+    });
+
     const island = document.getElementById('simIsland');
     const lyricEl = document.getElementById('simLyric');
     const titleEl = document.getElementById('simTitle');
     const artistEl = document.getElementById('simArtist');
     const playBtn = document.getElementById('simPlayBtn');
 
+    // Desktop hover interactions
     island.addEventListener('mouseenter', () => island.classList.add('expanded'));
     island.addEventListener('mouseleave', () => {
       island.classList.remove('expanded');
       recalcPillWidth();
     });
 
+    // Mobile / Touch Click Toggle
+    island.addEventListener('click', (e) => {
+      if (e.target.closest('.ctrl-btn')) return;
+      if (island.classList.contains('expanded')) {
+        island.classList.remove('expanded');
+        recalcPillWidth();
+      } else {
+        island.classList.add('expanded');
+      }
+    });
+
+    // Close island when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!island.contains(e.target) && island.classList.contains('expanded')) {
+        island.classList.remove('expanded');
+        recalcPillWidth();
+      }
+    });
+
     function recalcPillWidth() {
       if (island.classList.contains('expanded')) return;
       const len = lyricEl.innerText.length;
-      const w = Math.max(210, Math.min(480, len * 7.4 + 86));
+      const maxW = Math.min(480, (window.innerWidth || 360) - 48);
+      const minW = Math.min(180, maxW - 20);
+      const w = Math.max(minW, Math.min(maxW, len * 6.8 + 76));
       island.style.width = w + 'px';
     }
+
+    window.addEventListener('resize', () => {
+      recalcPillWidth();
+    });
 
     function renderSong() {
       const s = simCatalog[songIdx];
